@@ -15,11 +15,14 @@
                         </div>
                     @endif
                     <br>
-                    <form method="POST" action="/category">
+                    <form method="POST" action="/category" @if ($errors->any()) class="was-validated" @endif>
                         @csrf
                         <div class="form-group">
-                            <label for="name">Nom de la catégorie:</label>
+                            <label for="name">@lang('labels.category_name'):</label>
                             <input type="text" class="form-control" id="name" placeholder="Exemple : Mobilier" name="name">
+                            @if ($errors->first('name'))
+                                <div class="invalid-feedback" style="display: block">{{ $errors->first('name') }}</div>
+                            @endif
                         </div>
                         <button type="submit" class="btn btn-primary">Ajouter</button>
                         <a href="/categories" class="btn btn-secondary">Retour</a>

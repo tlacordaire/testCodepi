@@ -24,7 +24,7 @@
     <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
         <div class="container">
             <!-- Brand -->
-            <a class="navbar-brand" href="/products"><i class="fa fa-shopping-basket"></i> Shop</a>
+            <a class="navbar-brand" href="{{ route('products_list') }}"><i class="fa fa-shopping-basket"></i> Shop</a>
 
             <!-- Links -->
             <ul class="navbar-nav">
@@ -33,8 +33,8 @@
                         Produit
                     </a>
                     <div class="dropdown-menu">
-                        <a class="dropdown-item" href="/products"><i class="fa fa-list"></i> Liste des produits</a>
-                        <a class="dropdown-item" href="/product/create"><i class="fa fa-plus"></i> Ajouter un produit</a>
+                        <a class="dropdown-item" href="{{ route('products_list') }}"><i class="fa fa-list"></i> Liste des produits</a>
+                        <a class="dropdown-item" href="{{ route('product_create') }}"><i class="fa fa-plus"></i> Ajouter un produit</a>
                     </div>
                 </li>
                 <li class="nav-item dropdown">
@@ -42,8 +42,8 @@
                         Catégorie
                     </a>
                     <div class="dropdown-menu">
-                        <a class="dropdown-item" href="/categories"><i class="fa fa-list"></i> Liste des catégories</a>
-                        <a class="dropdown-item" href="/category/create"><i class="fa fa-plus"></i> Ajouter une catégorie</a>
+                        <a class="dropdown-item" href="{{ route('categories_list') }}"><i class="fa fa-list"></i> Liste des catégories</a>
+                        <a class="dropdown-item" href="{{ route('category_create') }}"><i class="fa fa-plus"></i> Ajouter une catégorie</a>
                     </div>
                 </li>
             </ul>

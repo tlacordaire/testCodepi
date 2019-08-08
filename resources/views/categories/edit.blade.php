@@ -15,15 +15,18 @@
                         </div>
                     @endif
                     <br>
-                    <form method="POST" action="/category/update">
+                    <form method="POST" action="{{ route('category_update') }}" @if ($errors->any()) class="was-validated" @endif>
                         @csrf
                         <div class="form-group">
-                            <label for="name">Nom de la catégorie:</label>
+                            <label for="name">@lang('labels.category_name'):</label>
                             <input type="hidden" name="id" value="{{ $category->id }}">
-                            <input type="text" class="form-control" id="name" placeholder="Exemple : Mobilier" name="name" value="{{ $category->name }}">
+                            <input type="text" class="form-control" id="name" placeholder="Exemple : Mobilier" name="name" value="{{ $category->name }}" required>
+                            @if ($errors->first('name'))
+                                <div class="invalid-feedback" style="display: block">{{ $errors->first('name') }}</div>
+                            @endif
                         </div>
                         <button type="submit" class="btn btn-primary">Editer</button>
-                        <a href="/categories" class="btn btn-secondary">Retour</a>
+                        <a href="{{ route('categories_list') }}" class="btn btn-secondary">Retour</a>
                     </form>
                 </div>
             </div>

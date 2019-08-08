@@ -30,7 +30,7 @@
                                     <td>{{ $category->name }}</td>
                                     <td class="text-center">{{ $category->created_at->formatLocalized('%d/%m/%Y') }}</td>
                                     <td class="text-center">{{ $category->updated_at->formatLocalized('%d/%m/%Y') }}</td>
-                                    <td class="text-muted"><a href="/category/{{ $category->id }}" class="btn btn-warning">Editer <i class="fa fa-pencil-square"></i></a></td>
+                                    <td class="text-muted"><a href="{{ route('category_edit', $category->id) }}" class="btn btn-warning">Editer <i class="fa fa-pencil-square"></i></a></td>
                                 </tr>
                             @endforeach
                         </tbody>

@@ -47,8 +47,8 @@
                                     <td class="text-center">{{ $product->created_at->formatLocalized('%d/%m/%Y') }}</td>
                                     <td class="text-center">{{ $product->updated_at->formatLocalized('%d/%m/%Y') }}</td>
                                     <td class="text-muted">
-                                        <a href="/product/{{ $product->id }}" class="btn btn-warning">Editer <i class="fa fa-pencil-square"></i></a>
-                                        <a href="/product/delete/{{ $product->id }}" class="btn btn-danger">Supprimer <i class="fa fa-times-circle-o"></i></a>
+                                        <a href="{{ route('product_edit', $product->id) }}" class="btn btn-warning">Editer <i class="fa fa-pencil-square"></i></a>
+                                        <a href="{{ route('product_delete', $product->id) }}" class="btn btn-danger">Supprimer <i class="fa fa-times-circle-o"></i></a>
                                     </td>
                                 </tr>
                             @endforeach

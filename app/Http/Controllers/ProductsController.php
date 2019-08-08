@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreProduct;
+use App\Http\Requests\UpdateProduct;
 use Illuminate\Http\Request;
 use App\Product;
 use App\Category;
@@ -19,44 +21,57 @@ class ProductsController extends Controller
         return view('products.create', ['categories' => Category::all(), 'features' => Feature::all()]);
     }
     
-    public function store(Request $request)
+    public function store(StoreProduct $request)
     {
-        $product = Product::create($request->all());
+        $validated = $request->validated();
+
+        $product = Product::create($validated);
         
         $product->categories()->sync($request->get('categories'));
         $product->features()->sync($request->get('features'));
-        
-        return redirect('/product/create')->with('status', 'Le produit "'.$request->name.'" a été ajouté!');
+
+        $request->session()->flash('status', 'Le produit "'.$request->name.'" a été ajouté!');
+
+        return redirect('/product/create');
     }
     
     public function edit(Product $id)
     {
+        // TO DO : find a better way to get this product
+        //return view('products.edit', ['product' => $id, 'categories' => Category::all(), 'features' => Feature::all()]);
         return view('products.edit', ['product' => Product::with('categories', 'features')->whereIn('id', $id)->first(), 'categories' => Category::all(), 'features' => Feature::all()]);
+
     }
     
-    public function update(Request $request)
+    public function update(UpdateProduct $request)
     {
+        $validated = $request->validated();
+
         $product = Product::find($request->id);
-        $product->name = $request->name;
+        $product->name = $validated->name;
         $product->save();
         
-        // On ajoute aux pivots les valeurs
+        // We add to the pivots the values
         $product->categories()->sync($request->get('categories'));
         $product->features()->sync($request->get('features'));
-        
-        return redirect('/products')->with('status', 'Le produit "'.$request->name.'" a été modifié!');
+
+        $request->session()->flash('status', 'Le produit "'.$request->name.'" a été modifié!');
+
+        return redirect('/products');
     }
     
     /**
      * @param Product $id
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
-     * Cette fonction permet de supprimer le produit de manière softDelete
+     * This function allows you to delete the product in a softDelete
      */
-    public function delete(Product $id)
+    public function delete(Product $request)
     {
-        $product = Product::find($id)->first();
+        $product = Product::find($request->id)->first();
         $product->delete();
-        
-        return redirect('/products')->with('status', 'Le produit a été supprimé!');
+
+        $request->session()->flash('status', 'Le produit a été supprimé!');
+
+        return redirect('/products');
     }
 }

@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreCategory;
+use App\Http\Requests\UpdateCategory;
 use Illuminate\Http\Request;
 use App\Category;
 use Carbon\Carbon;
@@ -18,14 +20,18 @@ class CategoriesController extends Controller
         return view('categories.create');
     }
     
-    public function store(Request $request)
+    public function store(StoreCategory $request)
     {
-        Category::create($request->all());
+        $validated = $request->validated();
+
+        Category::create($validated);
         
         // On utilise Carbon pour l'affichage des dates
         Carbon::setLocale('fr');
-        
-        return redirect('/category/create')->with('status', 'La catégorie "'.$request->name.'" a été ajoutée!');
+
+        $request->session()->flash('status', 'La catégorie "'.$request->name.'" a été ajoutée!');
+
+        return redirect('/category/create');
     }
     
     public function edit(Category $id)
@@ -33,13 +39,17 @@ class CategoriesController extends Controller
         return view('categories.edit', ['category' => Category::findorFail($id)->first()]);
     }
     
-    public function update(Request $request)
+    public function update(UpdateCategory $request)
     {
+        $validated = $request->validated();
+
         $category = Category::find($request->id);
-        $category->name = $request->name;
+        $category->name = $validated['name'];
         $category->save();
-        
-        return redirect('/categories')->with('status', 'La catégorie "'.$request->name.'" a été modifiée!');
+
+        $request->session()->flash('status', 'La catégorie "'.$request->name.'" a été modifiée!');
+
+        return redirect('/categories');
     }
     
     public function createJquery(Request $request)

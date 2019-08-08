@@ -15,27 +15,40 @@
                     </div>
                 @endif
                 <br>
-                <form method="POST" action="/product">
+                <form method="POST" action="/product" @if ($errors->any()) class="was-validated" @endif>
                     @csrf
                     <div class="form-group">
-                        <label for="name">Nom du produit:</label>
-                        <input type="text" class="form-control" id="name" placeholder="Exemple : Renault Twingo" name="name">
+                        <label for="name">@lang('labels.product_name'):</label>
+                        <input type="text" class="form-control" id="name" placeholder="Exemple : Renault Twingo (3 à 255 caractères)" name="name" required>
+                        @if ($errors->first('name'))
+                            <div class="invalid-feedback">{{ $errors->first('name') }}</div>
+                        @endif
                     </div>
                     <div class="form-group">
-                        <label for="categories">Catégorie(s): <button type="button" id="add-categorie" class="btn btn-primary btn-sm"><i class="fa fa-plus"></i></button></label>
-                        <select class="categories" name="categories[]" id="categories" multiple="multiple" style="width: 100%;">
+                        <label for="categories">
+                            @lang('labels.category'):
+                            <button type="button" id="add-categorie" class="btn btn-primary btn-sm"><i class="fa fa-plus"></i></button>
+                            <i class="small font-weight-lighter">(1 à 5 catégories)</i>
+                        </label>
+                        <select class="categories" name="categories[]" id="categories" multiple="multiple" style="width: 100%;" required>
                             @foreach ($categories as $category)
                                 <option value="{{ $category->id }}">{{ $category->name }}</option>
                             @endforeach
                         </select>
+                        @if ($errors->first('categories'))
+                            <div class="text-danger" style="font-size: 80%;">{{ $errors->first('categories') }}</div>
+                        @endif
                     </div>
                     <div class="form-group">
-                        <label for="features">Caractéristiques: <i class="small font-weight-lighter">(3 minimum)</i></label>
+                        <label for="features">@lang('labels.feature'): <i class="small font-weight-lighter">(3 à 10 caractéristiques)</i></label>
                         <select class="features" name="features[]" multiple="multiple" id="features" style="width: 100%;">
                             @foreach ($features as $feature)
                                 <option value="{{ $feature->id }}">{{ $feature->name }}</option>
                             @endforeach
                         </select>
+                        @if ($errors->first('features'))
+                            <div class="text-danger" style="font-size: 80%;">{{ $errors->first('features') }}</div>
+                        @endif
                     </div>
                     <button type="submit" class="btn btn-primary">Ajouter</button>
                 </form>
